@@ -1,4 +1,5 @@
 using Hangfire;
+using WebApplication1.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,13 +17,21 @@ builder.Services.AddHangfire(configuration =>
         .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
         .UseSimpleAssemblyNameTypeSerializer()
         .UseRecommendedSerializerSettings()
-        .UseSqlServerStorage(builder.Configuration.GetConnectionString("AppConnection"))
+        .UseSqlServerStorage(builder.Configuration.GetConnectionString("AppDb"))
 );
 
 // Add the processing server as IHostedService
 builder.Services.AddHangfireServer();
 
+// configure DI for application services
+builder.Services.AddSingleton<DataContext>();
+
 var app = builder.Build();
+
+// ensure database and tables exist
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+await context.Init();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
