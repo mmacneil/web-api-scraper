@@ -24,13 +24,13 @@ builder.Services.AddHangfire(configuration =>
 builder.Services.AddHangfireServer();
 
 // configure DI for application services
-builder.Services.AddSingleton<DataContext>();
+builder.Services.AddSingleton<DatabaseUtils>();
 
 var app = builder.Build();
 
 // ensure database and tables exist
 using var scope = app.Services.CreateScope();
-var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+var context = scope.ServiceProvider.GetRequiredService<DatabaseUtils>();
 await context.Init();
 
 // Configure the HTTP request pipeline.

@@ -4,7 +4,7 @@ using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-public class DataContext(IConfiguration configuration)
+public class DatabaseUtils(IConfiguration configuration)
 {
     private IDbConnection CreateDbConnection(string connectionString)
     {
