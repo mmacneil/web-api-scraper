@@ -35,6 +35,7 @@ public class DataContext(IConfiguration configuration)
         using var connection = CreateDbConnection(
             configuration.GetConnectionString("AppDb") ?? throw new InvalidOperationException()
         );
+
         await connection.ExecuteAsync(
             """
             IF OBJECT_ID('SeasonStatistics', 'U') IS NULL
