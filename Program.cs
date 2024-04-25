@@ -30,8 +30,8 @@ var app = builder.Build();
 
 // ensure database and tables exist
 using var scope = app.Services.CreateScope();
-var context = scope.ServiceProvider.GetRequiredService<DatabaseUtils>();
-await context.Init();
+var databaseUtils = scope.ServiceProvider.GetRequiredService<DatabaseUtils>();
+await databaseUtils.Init();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
