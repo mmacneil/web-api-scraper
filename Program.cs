@@ -1,5 +1,6 @@
 using Hangfire;
-using WebApplication1.Helpers;
+using WebApiScraper.Infrastructure;
+using WebApiScraper.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,13 +25,16 @@ builder.Services.AddHangfire(configuration =>
 builder.Services.AddHangfireServer();
 
 // configure DI for application services
-builder.Services.AddSingleton<DatabaseUtils>();
+builder.Services.AddSingleton<DatabaseContext>();
+builder.Services.AddScoped<StatisticsCrawler>();
+builder.Services.AddScoped<PlayerRepository>();
+builder.Services.AddScoped<StatisticsRepository>();
 
 var app = builder.Build();
 
 // ensure database and tables exist
 using var scope = app.Services.CreateScope();
-var databaseUtils = scope.ServiceProvider.GetRequiredService<DatabaseUtils>();
+var databaseUtils = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 await databaseUtils.Init();
 
 // Configure the HTTP request pipeline.

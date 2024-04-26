@@ -1,15 +1,17 @@
-namespace WebApplication1.Helpers;
+namespace WebApiScraper.Infrastructure;
 
 using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-public class DatabaseUtils(IConfiguration configuration)
+public class DatabaseContext(IConfiguration configuration)
 {
-    private IDbConnection CreateDbConnection(string connectionString)
-    {
-        return new SqlConnection(connectionString);
-    }
+    public IDbConnection CreateDbConnection() => CreateDbConnection(AppDbConnectionString);
+
+    public string AppDbConnectionString =>
+        configuration.GetConnectionString("AppDb") ?? throw new InvalidOperationException();
+    public string MasterDbConnectionString =>
+        configuration.GetConnectionString("MasterDb") ?? throw new InvalidOperationException();
 
     public async Task Init()
     {
@@ -17,12 +19,13 @@ public class DatabaseUtils(IConfiguration configuration)
         await InitTables();
     }
 
+    private static IDbConnection CreateDbConnection(string connectionString) =>
+        new SqlConnection(connectionString);
+
     private async Task InitDatabase()
     {
         // create database if it doesn't exist
-        using var connection = CreateDbConnection(
-            configuration.GetConnectionString("MasterDb") ?? throw new InvalidOperationException()
-        );
+        using var connection = CreateDbConnection(MasterDbConnectionString);
 
         await connection.ExecuteAsync(
             "IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'WebApiScraper') CREATE DATABASE [WebApiScraper];"
@@ -32,9 +35,7 @@ public class DatabaseUtils(IConfiguration configuration)
     private async Task InitTables()
     {
         // create tables if they don't exist
-        using var connection = CreateDbConnection(
-            configuration.GetConnectionString("AppDb") ?? throw new InvalidOperationException()
-        );
+        using var connection = CreateDbConnection(AppDbConnectionString);
 
         await connection.ExecuteAsync(
             """
