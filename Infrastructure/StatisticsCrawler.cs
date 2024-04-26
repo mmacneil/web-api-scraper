@@ -21,7 +21,7 @@ namespace WebApiScraper.Infrastructure
         private static async Task<string> GetInnerText(IElementHandle elementHandle) =>
             (await elementHandle.GetPropertyAsync("innerText")).RemoteObject.Value.ToString();
 
-        private async Task CrawlPage(string url)
+        public async Task CrawlPage(string url)
         {
             var options = new LaunchOptions { Headless = true };
             Console.WriteLine("Downloading chromium");
@@ -37,6 +37,7 @@ namespace WebApiScraper.Infrastructure
             var nameElement = await page.QuerySelectorAsync(
                 "body > div > div:nth-child(1) > div > div > div > div.col-md-8 > div > h5"
             );
+
             var homeTownElement = await page.QuerySelectorAsync(
                 "body > div > div:nth-child(1) > div > div > div > div.col-md-8 > div > table > tbody > tr:nth-child(2) > td"
             );

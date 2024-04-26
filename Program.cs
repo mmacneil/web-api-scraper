@@ -1,4 +1,5 @@
 using Hangfire;
+using WebApiScraper;
 using WebApiScraper.Infrastructure;
 using WebApiScraper.Infrastructure.Repositories;
 
@@ -29,6 +30,8 @@ builder.Services.AddSingleton<DatabaseContext>();
 builder.Services.AddScoped<StatisticsCrawler>();
 builder.Services.AddScoped<PlayerRepository>();
 builder.Services.AddScoped<StatisticsRepository>();
+
+builder.Services.AddHostedService<SchedulerTask>();
 
 var app = builder.Build();
 
