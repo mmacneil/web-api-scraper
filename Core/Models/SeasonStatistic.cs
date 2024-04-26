@@ -1,4 +1,4 @@
-namespace WebApiScraper.Model
+namespace WebApiScraper.Core.Models
 {
     public class SeasonStatistic
     {
