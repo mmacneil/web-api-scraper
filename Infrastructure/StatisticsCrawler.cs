@@ -124,6 +124,16 @@ namespace WebApiScraper.Infrastructure
                     }
                 );
             }
+
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("");
+            Console.WriteLine("****************************************************");
+            Console.WriteLine($"Finished processing url: {url}");
+            Console.WriteLine($"Scraped and saved player data for {player.Name}.");
+            Console.WriteLine($"Saved stats for [{statTableRowElements.Length}] season(s).");
+            Console.WriteLine("****************************************************");
+            Console.ResetColor();
         }
     }
 }
