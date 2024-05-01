@@ -12,12 +12,13 @@ namespace WebApiScraper.Controllers
 
         public PlayersController(PlayerRepository playerRepository)
         {
-            _playerRepository = playerRepository;    
+            _playerRepository = playerRepository;
+          
         }
 
         [HttpGet(Name = "GetPlayer")]
         public async Task<Player?> Get(int id)
-        {
+        {      
             return await _playerRepository.GetById(id);
         }
     }
