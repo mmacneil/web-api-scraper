@@ -15,11 +15,6 @@ namespace WebApiScraper.Controllers
             _playerRepository = playerRepository;    
         }
 
-        /// <summary>
-        /// Creates a TodoItem.
-        /// </summary>
-        /// <param name="id">dfdfd</param>
-        /// <returns>A newly created TodoItem</returns>
         [HttpGet(Name = "GetPlayer")]
         public async Task<Player?> Get(int id)
         {
